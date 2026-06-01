@@ -19,8 +19,9 @@ npm i react-hook-form @hookform/resolvers
 # Hilfsprogramm für npm
 npm install -D tsx
 
-# Datenbank initialisieren
-npm run db:init
+# Datenbank initialisieren :: Update
+npm run db:new
+npm run db:reset # die Tabelle wird gelöscht und neu erstellt
 ```
 
 ## Projekt Thema
