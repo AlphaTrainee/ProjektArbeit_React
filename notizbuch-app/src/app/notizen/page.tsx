@@ -1,6 +1,7 @@
-import { db } from "@/db/database";
+// import { db } from "@/db/database";
+import { db } from "@/lib/db";
 import { CategoryFilter } from "../CategoryFilter";
-import { NotesList } from "../NotesList";
+import { NotesList } from "../../components/NotesList";
 import Link from "next/link";
 
 export default async function NotizenPage() {

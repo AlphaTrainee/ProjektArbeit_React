@@ -1,6 +1,9 @@
-import { db } from "@/db/database";
+// import { db } from "@/db/database";
+import { db } from "@/lib/db";
 import { WeatherWidget } from "./WeatherWidget";
+import { NoteCard } from "../components/NoteCard";
 import Link from "next/link"; // Für die Navigation ohne Seiten-Reload
+import { NoteSchema, Note } from "@/types/note";
 
 export default async function Home() {
   // Wir holen uns nur die letzten 3 Einträge, sortiert nach der ID (neueste zuerst)
@@ -8,12 +11,14 @@ export default async function Home() {
     "SELECT * FROM notes ORDER BY id DESC LIMIT 3",
   );
 
-  const latestNotes = result.rows.map((row) => ({
-    id: row.id,
-    title: row.title,
-    content: row.content,
-    category: row.category,
-  }));
+  const latestNotes: Note[] = result.rows.map((row) =>
+    NoteSchema.parse({
+      id: row.id,
+      title: row.title,
+      content: row.content,
+      category: row.category,
+    }),
+  );
 
   return (
     <main className="w-full max-w-5xl mx-auto p-4 md:p-6 transition-all">
@@ -49,22 +54,8 @@ export default async function Home() {
         ) : (
           <div className="space-y-4">
             {latestNotes.map((note) => (
-              <div
-                key={String(note.id)}
-                className="p-4 border rounded-lg shadow-sm bg-white"
-              >
-                <div className="flex justify-between items-start">
-                  <h3 className="text-lg font-semibold">
-                    {String(note.title)}
-                  </h3>
-                  <span className="text-xs font-semibold px-2 py-1 bg-gray-100 rounded text-gray-600">
-                    {String(note.category)}
-                  </span>
-                </div>
-                <p className="text-gray-600 mt-2 text-sm">
-                  {String(note.content)}
-                </p>
-              </div>
+              /* Hier nutzen wir jetzt die neue Komponente */
+              <NoteCard key={note.id} note={note} />
             ))}
           </div>
         )}

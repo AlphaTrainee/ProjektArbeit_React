@@ -1,13 +1,14 @@
 "use client";
 
 import { useFilterStore } from "@/store/filterStore";
+import { NoteCard } from "./NoteCard";
 
-interface Note {
-  id: any;
-  title: any;
-  content: any;
-  category: any;
-}
+export type Note = {
+  id: string | number;
+  title: string;
+  content: string;
+  category: string;
+};
 
 interface NotesListProps {
   initialNotes: Note[];
@@ -30,20 +31,7 @@ export function NotesList({ initialNotes }: NotesListProps) {
           Keine Notizen in dieser Kategorie gefunden.
         </p>
       ) : (
-        filteredNotes.map((note) => (
-          <div
-            key={String(note.id)}
-            className="p-4 border rounded-lg shadow-sm bg-white"
-          >
-            <div className="flex justify-between items-start">
-              <h2 className="text-xl font-semibold">{String(note.title)}</h2>
-              <span className="text-xs font-semibold px-2 py-1 bg-gray-100 rounded text-gray-600">
-                {String(note.category)}
-              </span>
-            </div>
-            <p className="text-gray-600 mt-2">{String(note.content)}</p>
-          </div>
-        ))
+        filteredNotes.map((note) => <NoteCard key={note.id} note={note} />)
       )}
     </div>
   );

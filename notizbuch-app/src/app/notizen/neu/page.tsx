@@ -1,4 +1,4 @@
-import { NoteForm } from "../../NoteForm";
+import { NoteForm } from "../../../components/NoteForm";
 import Link from "next/link";
 
 export default function NeueNotizPage() {
