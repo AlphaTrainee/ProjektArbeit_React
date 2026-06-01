@@ -1,7 +1,7 @@
 "use client";
 
 import { useFilterStore } from "@/store/filterStore";
-import { NoteCard } from "./NoteCard";
+import { NoteCard } from "@/components/NoteCard";
 
 export type Note = {
   id: string | number;

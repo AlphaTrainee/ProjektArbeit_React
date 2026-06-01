@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { deleteNoteAction } from "../app/actions";
+import { deleteNoteAction } from "@/actions/actions";
 import Link from "next/link";
 
 interface NoteCardProps {
@@ -19,6 +19,18 @@ export function NoteCard({ note }: NoteCardProps) {
     success: false,
     fieldErrors: null,
   });
+
+  // Funktion zur Überprüfung vor dem Absenden
+  const handleDeleteSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
+    const confirmed = window.confirm(
+      `Möchtest du die Notiz "${note.title}" wirklich unwiderruflich löschen?`,
+    );
+
+    // Wenn der Nutzer auf "Abbrechen" klickt, wird das Absenden verhindert
+    if (!confirmed) {
+      event.preventDefault();
+    }
+  };
 
   return (
     <div className="p-4 border rounded shadow-sm bg-white flex flex-col justify-between">
@@ -46,7 +58,8 @@ export function NoteCard({ note }: NoteCardProps) {
           ✏️ Bearbeiten
         </Link>
 
-        <form action={formAction}>
+        {/* onSubmit fängt den Klick ab, bevor die formAction feuert */}
+        <form action={formAction} onSubmit={handleDeleteSubmit}>
           <input type="hidden" name="id" value={note.id} />
 
           <button

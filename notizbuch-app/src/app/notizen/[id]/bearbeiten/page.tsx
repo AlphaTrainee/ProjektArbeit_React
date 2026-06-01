@@ -1,29 +1,38 @@
 // import { db } from "@/db/database";
 import { db } from "@/lib/db";
-import { NoteForm } from "../../../../components/NoteForm";
+import { NoteForm } from "@/components/NoteForm";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
 
 interface EditNotePageProps {
   params: Promise<{
     id: string;
   }>;
-  searchParams: Promise<{
-    from?: string; // Fängt die Ursprungs-URL auf
-  }>;
 }
 
-export default async function EditNotePage({
-  params,
-  searchParams,
-}: EditNotePageProps) {
+export default async function EditNotePage({ params }: EditNotePageProps) {
   const { id } = await params;
-  const { from } = await searchParams;
   const noteId = parseInt(id, 10);
 
   if (isNaN(noteId)) {
     notFound();
   }
+
+  const headersList = await headers();
+  const referer = headersList.get("referer");
+
+  // Wir extrahieren nur den Pfad (z.B. /root oder /root/notizen)
+  let fromUrl = "/";
+  if (referer) {
+    try {
+      const url = new URL(referer);
+      fromUrl = url.pathname + url.search;
+    } catch (e) {
+      fromUrl = "/";
+    }
+  }
+  console.log(`FROM: ${fromUrl}`);
 
   const result = await db.execute({
     sql: "SELECT * FROM notes WHERE id = ?",
@@ -44,7 +53,7 @@ export default async function EditNotePage({
   };
 
   // Bestimme das Ziel für den Abbrechen-Button (entweder 'from' oder Standard '/')
-  const backUrl = from || "/";
+  const backUrl = fromUrl || "/";
 
   return (
     <main className="w-full max-w-5xl mx-auto p-4 md:p-6 transition-all">

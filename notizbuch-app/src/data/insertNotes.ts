@@ -1,7 +1,7 @@
 "use server";
 
-import { db as client } from "../lib/db";
-import { noteSchema } from "./schema";
+import { db as client } from "@/lib/db";
+import { noteSchema } from "@/data/schema";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
@@ -67,7 +67,7 @@ export async function insertNote(
   }
 
   if (client) {
-    client.close();
+    // client.close();
   }
 
   // 3. HIER ERFOLGT DER DYNAMISCHE REDIRECT

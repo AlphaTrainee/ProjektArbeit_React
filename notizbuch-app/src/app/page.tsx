@@ -1,7 +1,7 @@
 // import { db } from "@/db/database";
 import { db } from "@/lib/db";
-import { WeatherWidget } from "./WeatherWidget";
-import { NoteCard } from "../components/NoteCard";
+import { WeatherWidget } from "@/widgets/WeatherWidget";
+import { NoteCard } from "@/components/NoteCard";
 import Link from "next/link"; // Für die Navigation ohne Seiten-Reload
 import { NoteSchema, Note } from "@/types/note";
 
