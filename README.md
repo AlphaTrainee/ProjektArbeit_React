@@ -10,6 +10,9 @@
 npx create-next-app@latest notizbuch-app --typescript --eslint --tailwind --src-dir --app --no-turbopack --import-alias "@/*"
 cd notizbuch-app
 npm install @libsql/client zustand @tanstack/react-query
+npm install mysql2
+npm i zod
+npm i react-hook-form @hookform/resolvers
 ```
 
 ```bash
