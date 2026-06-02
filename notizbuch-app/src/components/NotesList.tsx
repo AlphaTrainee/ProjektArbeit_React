@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useFilterStore } from "@/store/filterStore";
 import { NoteCard } from "@/components/NoteCard";
+import { HighlightedText } from "@/components/HighlightedText";
 
 export type Note = {
   id: string | number;
@@ -13,57 +14,62 @@ export type Note = {
 
 interface NotesListProps {
   initialNotes: Note[];
+  searchQuery: string; // Neues Prop empfangen
 }
 
-export function NotesList({ initialNotes }: NotesListProps) {
+export function NotesList({ initialNotes, searchQuery }: NotesListProps) {
   const currentCategory = useFilterStore((state) => state.currentCategory);
-
-  // 1. Zustand für die aktuelle Seitennummer (startet bei Seite 1)
   const [currentPage, setCurrentPage] = useState(1);
-
-  // Feste Vorgabe: Maximal 3 Einträge pro Seite
   const itemsPerPage = 3;
 
-  // 2. Notizen basierend auf der Kategorie filtern
+  // Notizen basierend auf der Kategorie filtern
   const filteredNotes = initialNotes.filter((note) => {
     if (currentCategory === "Alle") return true;
     return String(note.category) === currentCategory;
   });
 
-  // Wenn sich die Kategorie ändert, springen wir sofort zurück auf Seite 1
+  // Wenn sich die Kategorie ändert, zurück auf Seite 1
   const [lastCategory, setLastCategory] = useState(currentCategory);
   if (currentCategory !== lastCategory) {
     setLastCategory(currentCategory);
     setCurrentPage(1);
   }
 
-  // 3. Mathematische Berechnung der Seitenstruktur
+  // Mathematische Berechnung der Seitenstruktur
   const totalItems = filteredNotes.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  // Indexgrenzen für den aktuellen Ausschnitt (Slice) berechnen
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-  // Genau die 3 Einträge für die aktuelle Seite herausschneiden
   const currentNotes = filteredNotes.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <div className="space-y-6">
-      {/* Liste der Notizen (max. 3) */}
       {filteredNotes.length === 0 ? (
         <p className="text-gray-500 text-center py-4">
           Keine Notizen in dieser Kategorie gefunden.
         </p>
       ) : (
         <div className="space-y-4">
-          {currentNotes.map((note) => (
-            <NoteCard key={note.id} note={note} />
-          ))}
+          {currentNotes.map((note) => {
+            // Wir bereiten die modifizierte Notiz mit den Markierungen vor
+            const highlightedNote = {
+              ...note,
+              title: (
+                <HighlightedText text={note.title} highlight={searchQuery} />
+              ) as unknown as string, // Cast nötig, falls NoteCard strikt String verlangt
+              content: (
+                <HighlightedText text={note.content} highlight={searchQuery} />
+              ) as unknown as string,
+            };
+
+            return <NoteCard key={note.id} note={highlightedNote} />;
+          })}
         </div>
       )}
 
-      {/* 4. Seitennavigation unten anzeigen (nur wenn es mehr als 1 Seite gibt) */}
+      {/* Seitennavigation unten anzeigen */}
       {totalPages > 1 && (
         <div className="flex items-center justify-between border-t border-gray-200 pt-4 mt-4">
           <button

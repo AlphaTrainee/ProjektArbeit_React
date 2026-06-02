@@ -4,6 +4,7 @@ import { WeatherWidget } from "@/widgets/WeatherWidget";
 import { NoteCard } from "@/components/NoteCard";
 import Link from "next/link"; // Für die Navigation ohne Seiten-Reload
 import { NoteSchema, Note } from "@/types/note";
+import { SearchInput } from "@/components/SearchInput";
 
 export default async function Home() {
   // Wir holen uns nur die letzten 3 Einträge, sortiert nach der ID (neueste zuerst)
@@ -42,6 +43,7 @@ export default async function Home() {
         >
           ➕ Neue Notiz schreiben
         </Link>
+        <SearchInput targetRoute="/notizen" />
       </div>
 
       {/* Die 3 neuesten Einträge */}

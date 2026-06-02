@@ -1,10 +1,22 @@
 import { createClient } from "@libsql/client";
-// HIER: Das normale mysql-Import oben komplett LÖSCHEN!
+
+// Typsichere Struktur für eine Datenbankzeile
+export interface DBRow {
+  id: string | number;
+  title: string;
+  content: string;
+  category: string;
+  [key: string]: unknown; // Erlaubt zusätzliche Spalten typsicher über unknown
+}
+
+export interface DBResult {
+  rows: DBRow[];
+}
 
 interface UniversalDB {
   execute: (
     options: string | { sql: string; args?: unknown[] },
-  ) => Promise<unknown>;
+  ) => Promise<DBResult>;
   close: () => Promise<void>;
 }
 
@@ -12,12 +24,11 @@ const dbType = process.env.DB_TYPE || "libsql";
 let db: UniversalDB;
 
 if (dbType === "mysql") {
-  // Wir erstellen den Pool erst, wenn execute das erste Mal aufgerufen wird
-  let pool: unknown = null;
+  // Wir importieren den echten Typ für den Pool aus mysql2
+  let pool: import("mysql2/promise").Pool | null = null;
 
   const getPool = async () => {
     if (!pool) {
-      // Das ist die moderne, erlaubte Version von require()
       const mysql = await import("mysql2/promise");
       pool = mysql.createPool({
         host: process.env.DB_HOST,
@@ -41,9 +52,19 @@ if (dbType === "mysql") {
         sql = sql.replace("AUTOINCREMENT", "AUTO_INCREMENT");
       }
 
-      const pool = await getPool(); // Pool holen
-      const [rows] = await pool.execute(sql, args);
-      return { rows };
+      const currentPool = await getPool();
+      const [rows] = await currentPool.execute(sql, args);
+
+      // Die Zeilen werden über unknown sicher in unser DBRow-Format überführt
+      const formattedRows = (rows as Record<string, unknown>[]).map((row) => ({
+        id: String(row.id),
+        title: String(row.title),
+        content: String(row.content),
+        category: String(row.category),
+        ...row,
+      }));
+
+      return { rows: formattedRows };
     },
 
     async close() {
@@ -61,7 +82,18 @@ if (dbType === "mysql") {
 
   db = {
     async execute(options) {
-      return await client.execute(options);
+      const result = await client.execute(options);
+
+      // LibSQL Reihen sauber mappen ohne unsaubere Typen-Tricks
+      const formattedRows = result.rows.map((row) => ({
+        id: String(row.id ?? ""),
+        title: String(row.title ?? ""),
+        content: String(row.content ?? ""),
+        category: String(row.category ?? ""),
+        ...row,
+      }));
+
+      return { rows: formattedRows };
     },
     async close() {},
   };
