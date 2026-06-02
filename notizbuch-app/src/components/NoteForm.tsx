@@ -1,10 +1,11 @@
 "use client";
 
 import { insertNote } from "@/data/insertNotes";
-import { useActionState, useRef, startTransition } from "react";
+import { useActionState, useRef, startTransition, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { noteSchema } from "@/data/schema";
+import { NOTE_CATEGORIES } from "@/constants/types";
 
 interface NoteFormProps {
   note?: {
@@ -61,7 +62,7 @@ export function NoteForm({ note, redirectTo }: NoteFormProps) {
     <form
       ref={formRef}
       action={formAction}
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={(e) => handleSubmit(onSubmit)(e)}
       className="mb-8 p-4 border rounded-lg bg-gray-50 space-y-3"
       noValidate
     >
@@ -120,10 +121,11 @@ export function NoteForm({ note, redirectTo }: NoteFormProps) {
             (formData.get("category") as string) ?? note?.category ?? ""
           }
         >
-          <option value=""></option>
-          <option value="Arbeit">Arbeit</option>
-          <option value="Privat">Privat</option>
-          <option value="Idee">Idee</option>
+          {NOTE_CATEGORIES.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
         </select>
         <FieldError
           clientError={clientErrors.category}

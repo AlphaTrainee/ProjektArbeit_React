@@ -32,7 +32,7 @@ Definiert die standardisierte Rückgabestruktur für alle Actions, um Fehler- un
 
 - **Aufgabe**: Aktualisiert eine bestehende Notiz.
 - **Ablauf**:
-  1. Extrahiert die Daten, konvertiert die Notiz-ID explizit in eine Zahl (`Number`) und validiert das Gesamtelement gegen `NoteSchema`.
+  1. Extrahiert die Daten, konvertiert die Notiz-ID explizit in eine Zahl (`Number`) und validiert das Gesamtelement gegen `noteSchema`.
   2. Führt bei erfolgreicher Validierung ein `UPDATE notes SET ... WHERE id = ?` aus.
   3. Bereinigt den Seiten-Cache und führt einen Redirect aus.
 

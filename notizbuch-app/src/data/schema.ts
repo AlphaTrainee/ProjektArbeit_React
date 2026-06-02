@@ -16,4 +16,9 @@ export const noteSchema = z.object({
   category: z.string().min(1, {
     message: "Bitte wähle eine Kategorie aus.",
   }),
+  redirectTo: z.string().optional(),
 });
+
+export type Note = z.infer<typeof noteSchema>;
+
+export const noteFormSchema = noteSchema.omit({ id: true });

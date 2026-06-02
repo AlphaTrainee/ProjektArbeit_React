@@ -4,7 +4,7 @@
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { NoteSchema, NoteFormSchema } from "@/types/note";
+import { noteSchema, noteFormSchema } from "@/data/schema";
 
 export type ActionState = {
   success: boolean;
@@ -23,7 +23,7 @@ export async function createNoteAction(
 ): Promise<ActionState> {
   const rawData = Object.fromEntries(formData.entries());
   const returnUrl = (rawData.returnUrl as string) || "/notizen";
-  const validation = NoteFormSchema.safeParse(rawData);
+  const validation = noteFormSchema.safeParse(rawData);
 
   if (!validation.success) {
     const fieldErrors: Record<string, string[]> = {};
@@ -75,7 +75,7 @@ export async function updateNoteAction(
     category: rawData.category,
   };
 
-  const validation = NoteSchema.safeParse(payload);
+  const validation = noteSchema.safeParse(payload);
 
   if (!validation.success) {
     const fieldErrors: Record<string, string[]> = {};

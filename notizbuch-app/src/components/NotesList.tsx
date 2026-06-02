@@ -1,26 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect } from "react";
 import { useFilterStore } from "@/store/filterStore";
 import { NoteCard } from "@/components/NoteCard";
 import { HighlightedText } from "@/components/HighlightedText";
-
-export type Note = {
-  id: string | number;
-  title: string;
-  content: string;
-  category: string;
-};
+import { useRouter, useSearchParams } from "next/navigation";
+import { Note } from "@/data/schema";
 
 interface NotesListProps {
   initialNotes: Note[];
-  searchQuery: string; // Neues Prop empfangen
+  searchQuery: string;
 }
 
 export function NotesList({ initialNotes, searchQuery }: NotesListProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const currentCategory = useFilterStore((state) => state.currentCategory);
-  const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
+
+  // 1. Seitenzahl direkt aus der URL lesen. Standard ist 1.
+  const urlPage = searchParams.get("page");
+  const currentPage = urlPage ? parseInt(urlPage, 10) || 1 : 1;
 
   // Notizen basierend auf der Kategorie filtern
   const filteredNotes = initialNotes.filter((note) => {
@@ -28,20 +28,38 @@ export function NotesList({ initialNotes, searchQuery }: NotesListProps) {
     return String(note.category) === currentCategory;
   });
 
-  // Wenn sich die Kategorie ändert, zurück auf Seite 1
-  const [lastCategory, setLastCategory] = useState(currentCategory);
-  if (currentCategory !== lastCategory) {
-    setLastCategory(currentCategory);
-    setCurrentPage(1);
-  }
-
   // Mathematische Berechnung der Seitenstruktur
   const totalItems = filteredNotes.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
+  // 2. Hilfsfunktion zur URL-Aktualisierung (mit useCallback stabilisiert)
+  const changePage = useCallback(
+    (newPage: number) => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (newPage === 1) {
+        params.delete("page");
+      } else {
+        params.set("page", newPage.toString());
+      }
+      router.push(`?${params.toString()}`, { scroll: false });
+    },
+    [searchParams, router],
+  );
+
+  // 3. Synchronisations- & Reset-Effekt mit intelligenter Deckelung auf das Maximum
+  useEffect(() => {
+    if (searchParams.get("page")) {
+      const urlPageInt = parseInt(searchParams.get("page") || "1", 10);
+
+      // Wenn die URL-Seite größer als die maximale Seitenzahl ist, auf das Maximum deckeln
+      if (urlPageInt > totalPages && totalPages > 0) {
+        changePage(totalPages);
+      }
+    }
+  }, [currentCategory, totalPages, searchParams, changePage]);
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-
   const currentNotes = filteredNotes.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
@@ -52,20 +70,18 @@ export function NotesList({ initialNotes, searchQuery }: NotesListProps) {
         </p>
       ) : (
         <div className="space-y-4">
-          {currentNotes.map((note) => {
-            // Wir bereiten die modifizierte Notiz mit den Markierungen vor
-            const highlightedNote = {
-              ...note,
-              title: (
+          {currentNotes.map((note) => (
+            <NoteCard
+              key={note.id}
+              note={note}
+              title={
                 <HighlightedText text={note.title} highlight={searchQuery} />
-              ) as unknown as string, // Cast nötig, falls NoteCard strikt String verlangt
-              content: (
+              }
+              content={
                 <HighlightedText text={note.content} highlight={searchQuery} />
-              ) as unknown as string,
-            };
-
-            return <NoteCard key={note.id} note={highlightedNote} />;
-          })}
+              }
+            />
+          ))}
         </div>
       )}
 
@@ -73,7 +89,7 @@ export function NotesList({ initialNotes, searchQuery }: NotesListProps) {
       {totalPages > 1 && (
         <div className="flex items-center justify-between border-t border-gray-200 pt-4 mt-4">
           <button
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            onClick={() => changePage(Math.max(currentPage - 1, 1))}
             disabled={currentPage === 1}
             className="px-4 py-2 bg-gray-100 text-gray-700 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200 transition-colors"
           >
@@ -86,9 +102,7 @@ export function NotesList({ initialNotes, searchQuery }: NotesListProps) {
           </span>
 
           <button
-            onClick={() =>
-              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-            }
+            onClick={() => changePage(Math.min(currentPage + 1, totalPages))}
             disabled={currentPage === totalPages}
             className="px-4 py-2 bg-gray-100 text-gray-700 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200 transition-colors"
           >

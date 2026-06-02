@@ -1,4 +1,4 @@
-import { createClient } from "@libsql/client";
+import { createClient, InArgs } from "@libsql/client";
 
 // Typsichere Struktur für eine Datenbankzeile
 export interface DBRow {
@@ -43,26 +43,42 @@ if (dbType === "mysql") {
     return pool;
   };
 
+  // src/lib/db.ts -> Innerhalb des "if (dbType === "mysql")" Blocks
   db = {
     async execute(options) {
       let sql = typeof options === "string" ? options : options.sql;
-      const args = typeof options === "string" ? [] : options.args || [];
+
+      // Typsichere Deklaration der Argumente ohne any
+      const args: (string | number | boolean | null)[] =
+        typeof options === "string"
+          ? []
+          : (options.args as (string | number | boolean | null)[]) || [];
 
       if (sql.includes("AUTOINCREMENT")) {
         sql = sql.replace("AUTOINCREMENT", "AUTO_INCREMENT");
       }
 
-      const currentPool = await getPool();
-      const [rows] = await currentPool.execute(sql, args);
+      // Initialisiert die globale Variable 'pool', falls noch nicht geschehen
+      await getPool();
 
-      // Die Zeilen werden über unknown sicher in unser DBRow-Format überführt
-      const formattedRows = (rows as Record<string, unknown>[]).map((row) => ({
-        id: String(row.id),
-        title: String(row.title),
-        content: String(row.content),
-        category: String(row.category),
-        ...row,
-      }));
+      // Wir nutzen AUSSCHLIESSLICH die globale Variable 'pool'
+      const [result] = await pool!.execute(sql, args);
+
+      // Prüfung auf Schreiboperation (ResultSetHeader statt Zeilen-Array)
+      if (!Array.isArray(result)) {
+        return { rows: [] };
+      }
+
+      // Wenn es ein Array ist (SELECT), mappen wir es typsicher
+      const formattedRows = (result as Record<string, unknown>[]).map(
+        (row) => ({
+          id: String(row.id ?? ""),
+          title: String(row.title ?? ""),
+          content: String(row.content ?? ""),
+          category: String(row.category ?? ""),
+          ...row,
+        }),
+      );
 
       return { rows: formattedRows };
     },
@@ -70,6 +86,7 @@ if (dbType === "mysql") {
     async close() {
       if (pool) {
         await pool.end();
+        pool = null;
       }
     },
   };
@@ -82,9 +99,19 @@ if (dbType === "mysql") {
 
   db = {
     async execute(options) {
-      const result = await client.execute(options);
+      const sql = typeof options === "string" ? options : options.sql;
 
-      // LibSQL Reihen sauber mappen ohne unsaubere Typen-Tricks
+      // Typsicherer Cast auf das von LibSQL erwartete Interface statt 'any'
+      const args = (
+        typeof options === "string" ? [] : options.args || []
+      ) as InArgs;
+
+      const result = await client.execute({
+        sql,
+        args, // Passt jetzt perfekt, da als InArgs deklariert
+      });
+
+      // LibSQL Reihen sauber mappen
       const formattedRows = result.rows.map((row) => ({
         id: String(row.id ?? ""),
         title: String(row.title ?? ""),
