@@ -1,0 +1,36 @@
+notizbuch-app/
+├── src/
+│   ├── actions/
+│   │   └── actions.ts
+│   ├── app/
+│   │   └── notizen/
+│   │       ├── [id]/
+│   │       │   └── bearbeiten/
+│   │       │       └── page.tsx
+│   │       ├── neu/
+│   │       │   └── page.tsx
+│   │       └── page.tsx
+│   ├── components/
+│   │   ├── CategoryFilter.tsx
+│   │   ├── HighlightedText.tsx
+│   │   ├── NoteCard.tsx
+│   │   ├── NoteForm.tsx
+│   │   ├── NotesList.tsx
+│   │   └── SearchInput.tsx
+│   ├── data/
+│   │   ├── insertNotes.ts
+│   │   └── schema.ts
+│   ├── db/
+│   │   └── init.ts
+│   ├── lib/
+│   │   └── db.ts
+│   ├── store/
+│   │   └── filterStore.ts
+│   ├── types/
+│   │   └── note.ts
+│   └── widgets/
+│       └── WeatherWidget.tsx
+├── .env.local (.example)
+├── package.json
+└── README.md
+

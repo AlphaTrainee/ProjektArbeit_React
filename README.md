@@ -4,8 +4,6 @@
 
 ## Projekt inititalisieren und vorbereiten
 
-> https://gemini.google.com/app/d97856317e42843b
-
 ```bash
 npx create-next-app@latest notizbuch-app --typescript --eslint --tailwind --src-dir --app --no-turbopack --import-alias "@/*"
 cd notizbuch-app
@@ -24,47 +22,41 @@ npm run db:new
 npm run db:reset # die Tabelle wird gelöscht und neu erstellt
 ```
 
-## Projekt Thema
+## Projekt Thema: Digitales Notizbuch
 
-<blockquote>
-Der Plan: Wir bauen ein "Digitales Notizbuch" (Ideen-Sammler)
+### Projektstruktur & Dokumentation
 
-Kein Schnickschnack, keine Logins, keine komplexen Relationen. Nur eine Tabelle in der Datenbank: notes (id, title, content, category).
+Hier findest du die Übersicht der Projektkomponenten. Klicke auf eine Datei, um direkt zur jeweiligen Dokumentationsseite zu gelangen:
 
-So haken wir die Punkte mit minimalem Code ab:
-
-1. Die Datenbank (Punkt 3 & 4)
-
-Wir nehmen eine lokale SQLite-Datei. Keine Cloud, kein Setup-Wahnsinn. Eine Tabelle, drei Spalten. 2. Die Hauptseite (Punkt 1 & 2 & 3)
-
-    Server Component (RSC): Die Startseite lädt einfach stumpf alle Notizen direkt aus der SQLite-Datenbank und listet sie auf.
-
-    Dynamische Route (/[id]): Wenn man auf eine Notiz klickt, landet man auf einer Detailseite, die genau diese eine Notiz per ID aus der Datenbank liest.
-
-3. Formular & Server Actions (Punkt 4, 5, 6)
-
-   Create/Update: Ein einfaches Formular, um eine Notiz anzulegen oder zu ändern.
-
-   Das Formular schickt die Daten an eine Server Action (das erfüllt Punkt 4 und 5 auf einen Schlag, Route Handler ignorieren wir einfach – Begründung für die Präsentation: "Server Actions sparen API-Code").
-
-   Für den State nutzen wir useActionState für die Fehlermeldung, falls der Titel leer ist.
-
-4. Client Data Layer & TanStack Query (Punkt 8)
-
-Hier tricksen wir. Wir bauen einfach ein kleines Suchfeld oder eine Kategorie-Filter-Leiste als Client Component. Wenn man da tippt, feuert TanStack Query einen Request ab.
-
-    Deine Begründung für die Präsentation, warum kein useEffect: "TanStack Query bietet automatisches Caching und Out-of-the-box Ladezustände, wodurch wir fehleranfälligen Boilerplate-Code mit useEffect vermeiden."
-
-5. State Management (Punkt 9)
-
-Wir nehmen Zustand. Warum? Weil Zustand die mit Abstand einfachste Library ist. Man braucht genau 5 Zeilen Code, um einen Store zu erstellen, im Gegensatz zu dem Redux-Monster.
-
-    Wir speichern dort einfach nur eine einzige Sache: Ob die Filter-Leiste offen oder geschlossen ist (isFilterOpen: boolean). Zack, Anforderung erfüllt.
-
-    Deine Begründung: "Für ein globales UI-Flag war Context API zu aufwendig (Re-Renders) und Redux komplett überdimensioniert. Zustand ist schlank und performant."
-
-6. Styling (Punkt 10)
-
-Wir nutzen ein fertiges Tailwind CSS-Template oder klatschen einfach standardisierte CSS-Klassen drauf. Der Fokus liegt laut Aufgabe eh nicht auf CSS.
-
-</blockquote>
+- `notizbuch-app/`
+  - `src/`
+    - `actions/`
+      - 📄 [`actions.ts`](./DOCS/src-actions-actions.ts.md) — _Server Actions für Notizen (z. B. Löschen)_
+    - `app/`
+      - `notizen/`
+        - `[id]/`
+          - `bearbeiten/`
+            - 📄 [`page.tsx`](./DOCS/src-app-notizen-%5Bid%5D-bearbeiten-page.tsx.md) — _Dynamische Server Page zum Editieren von Einträgen_
+        - `neu/`
+          - 📄 [`page.tsx`](./DOCS/src-app-notizen-neu-page.tsx.md) — _Server Page für das Erstellen neuer Notizen_
+        - 📄 [`page.tsx`](./DOCS/src-app-notizen-page.tsx.md) — _Hauptseite der Notizen mit Suche und Filterung_
+    - `components/`
+      - 📄 [`CategoryFilter.tsx`](./DOCS/src-components-CategoryFilter.tsx.md) — _Client-Komponente für die Kategorie-Auswahlbuttons_
+      - 📄 [`HighlightedText.tsx`](./DOCS/src-components-HighlightedText.tsx.md) — _Text-Highlighter für die optische Suchtreffer-Markierung_
+      - 📄 [`NoteCard.tsx`](./DOCS/src-components-NoteCard.tsx.md) — _Einzelne Notizkarte inklusive direktem Lösch-Formular_
+      - 📄 [`NoteForm.tsx`](./DOCS/src-components-NoteForm.tsx.md) — _Zentrales Hybrid-Formular (Erstellen und Bearbeiten)_
+      - 📄 [`NotesList.tsx`](./DOCS/src-components-NotesList.tsx.md) — _Verwaltet Filterung, Pagination (3er-Limit) und Listen-Rendering_
+      - 📄 [`SearchInput.tsx`](./DOCS/src-components-SearchInput.tsx.md) — _Suchfeld-Eingabe mit moderner React 19 Form Action_
+    - `data/`
+      - 📄 [`insertNotes.ts`](./DOCS/src-data-insertNotes.ts.md) — _Server Action für Create/Update mit dynamischem Redirect_
+      - 📄 [`schema.ts`](./DOCS/src-data-schema.ts.md) — _Zod-Validierungsschema für die Formulardaten_
+    - `db/`
+      - 📄 [`init.ts`](./DOCS/src-db-init.ts.md) — _Datenbank-Initialisierung und Seeding-Skript für Testdaten_
+    - `lib/`
+      - 📄 [`db.ts`](./DOCS/src-lib-db.ts.md) — _Database Abstraction Layer (Weiche für MySQL / LibSQL)_
+    - `store/`
+      - 📄 [`filterStore.ts`](./DOCS/src-store-filterStore.ts.md) — _Zustand-Store für die globale Kategorie-Filterung_
+    - `types/`
+      - 📄 [`note.ts`](./DOCS/src-types-note.ts.md) — _Zentrale TypeScript-Typen und abgeleitete Zod-Schemata_
+    - `widgets/`
+      - 📄 [`WeatherWidget.tsx`](./DOCS/src-widgets-WeatherWidget.tsx.md) — _Asynchrone Server Component für Hamburger Live-Wetterdaten_
