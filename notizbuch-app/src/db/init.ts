@@ -29,7 +29,7 @@ async function main() {
   await db.execute(createTableSql);
   console.log("Tabelle 'notes' wurde geprüft/erstellt.");
 
-  // 3 Beispiel-Datensätze (Seed-Daten)
+  // 10 Beispiel-Datensätze (Seed-Daten)
   const samplenotes = [
     {
       title: "Erste Notiz",
@@ -40,6 +40,54 @@ async function main() {
       title: "Einkaufsliste",
       content: "Milch, Brot, Kaffee für die Projektarbeit.",
       category: "Privat",
+    },
+    {
+      title: "Next.js Lernziele",
+      content:
+        "Server Actions verstehen, Routing vertiefen und API-Routen optimieren.",
+      category: "Studium",
+    },
+    {
+      title: "Projektidee: Notiz-App",
+      content:
+        "Dashboard mit Kategorien-Filter, Suchfunktion und responsivem Layout entwickeln.",
+      category: "Arbeit",
+    },
+    {
+      title: "Wichtige Passwörter & Logins",
+      content:
+        "Keine echten Passwörter hier speichern! Nur ein Reminder für den Passwort-Manager.",
+      category: "Privat",
+    },
+    {
+      title: "Git Befehle Spickzettel",
+      content:
+        "git commit -m 'message', git push origin main, git pull --rebase.",
+      category: "Studium",
+    },
+    {
+      title: "Urlaubsplanung 2026",
+      content:
+        "Flüge vergleichen, Unterkunft buchen und Reiseapotheke überprüfen.",
+      category: "Privat",
+    },
+    {
+      title: "Datenbank-Design",
+      content:
+        "Primärschlüssel setzen, Datentypen für SQLite und MySQL kompatibel halten.",
+      category: "Arbeit",
+    },
+    {
+      title: "Sport-Trainingsplan",
+      content:
+        "Montag: Laufen, Mittwoch: Krafttraining, Freitag: Dehnen und Regeneration.",
+      category: "Privat",
+    },
+    {
+      title: "React Hooks Zusammenfassung",
+      content:
+        "useState für lokalen State, useEffect für Side-Effects, useContext für globalen State.",
+      category: "Studium",
     },
   ];
 

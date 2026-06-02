@@ -47,7 +47,7 @@ export default async function Home() {
       {/* Die 3 neuesten Einträge */}
       <section>
         <h2 className="text-xl font-bold mb-4 text-gray-800">
-          Die 3 neuesten Einträge:
+          Die neuesten Einträge:
         </h2>
         {latestNotes.length === 0 ? (
           <p className="text-gray-500 italic">Noch keine Notizen vorhanden.</p>
