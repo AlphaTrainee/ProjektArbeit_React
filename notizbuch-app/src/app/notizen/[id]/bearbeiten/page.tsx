@@ -28,7 +28,7 @@ export default async function EditNotePage({ params }: EditNotePageProps) {
     try {
       const url = new URL(referer);
       fromUrl = url.pathname + url.search;
-    } catch (e) {
+    } catch (_) {
       fromUrl = "/";
     }
   }
