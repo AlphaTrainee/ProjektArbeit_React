@@ -20,7 +20,10 @@ export function SearchInput({ targetRoute = "/notizen" }: SearchInputProps) {
 
   return (
     // Nutzt die native React 19 / Next.js Form Action anstelle von onSubmit
-    <form action={handleSearchAction} className="flex gap-2 flex-1 max-w-md">
+    <form
+      action={handleSearchAction}
+      className="flex gap-2 flex-1 max-w-md ml-auto"
+    >
       <input
         type="text"
         name="searchQuery" // Wichtig: Über diesen Namen holen wir den Wert

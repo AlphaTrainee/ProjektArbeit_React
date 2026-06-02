@@ -1,7 +1,7 @@
 "use client";
 
 import { insertNote } from "@/data/insertNotes";
-import { useActionState, useRef, startTransition, useCallback } from "react";
+import { useActionState, useRef, startTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { noteSchema } from "@/data/schema";

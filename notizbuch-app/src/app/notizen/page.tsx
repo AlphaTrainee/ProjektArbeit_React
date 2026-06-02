@@ -4,6 +4,7 @@ import { CategoryFilter } from "@/components/CategoryFilter";
 import { NotesList } from "@/components/NotesList";
 import Link from "next/link";
 import { SearchInput } from "@/components/SearchInput";
+import { Note } from "@/data/schema";
 
 type PageProps = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -29,11 +30,12 @@ export default async function NotizenPage({ searchParams }: PageProps) {
     result = await db.execute("SELECT * FROM notes ORDER BY id DESC");
   }
 
-  const allNotes = result.rows.map((row) => ({
-    id: row.id,
+  const allNotes: Note[] = result.rows.map((row) => ({
+    id: String(row.id), // Garantiert die Konvertierung zu string für das Zod-Schema
     title: row.title,
     content: row.content,
     category: row.category,
+    // redirectTo ist hier optional und wird durch das Schema automatisch als undefined gewertet
   }));
 
   return (

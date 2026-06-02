@@ -63,10 +63,16 @@ export async function insertNote(
     }
   } catch (e) {
     result = false;
-    error = "Probleme beim Speichern ";
+    // 1. Für dich im Server-Terminal loggen
+    console.error("Datenbankfehler beim Speichern:", e);
+
+    // 2. Dem Benutzer die genaue Meldung oder einen klaren Hinweis mitgeben
+    error = `Probleme beim Speichern: ${e instanceof Error ? e.message : "Unbekannter Datenbankfehler"}`;
   }
 
   if (client) {
+    // das gibt immerzu Fehler
+    // Dies erledigt die db.ts automatisch
     // client.close();
   }
 
