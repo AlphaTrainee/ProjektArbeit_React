@@ -76,6 +76,18 @@ npm run db:new
 npm run db:reset # die Tabelle wird gelöscht und neu erstellt
 ```
 
+```bash
+# um npm run dev:clean zu nutzen
+npm i rimraf
+```
+
+```bash
+  "scripts": {
+    ....
+    "dev:clean": "rimraf .next && next dev",
+  }
+```
+
 ## Projekt Thema: Digitales Notizbuch
 
 ### Projektstruktur & Dokumentation
