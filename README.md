@@ -13,6 +13,23 @@ npm i zod
 npm i react-hook-form @hookform/resolvers
 ```
 
+## Datenbank Handling
+
+Um sich das Erstellen / Resetten der Datenbank zu vereinfachen, kann man folgende Einträge der
+`package.json` hinzufügen
+
+```bash
+  "scripts": {
+    ....
+    "db:new": "node --env-file=.env.local --import tsx src/db/init.ts",
+    "db:reset": "node --env-file=.env.local --import tsx src/db/init.ts --reset"
+  }
+```
+
+Die Einstellungen werden aus `.env.local` geladen, dieses File muss vorhanden sein
+
+### Notwendiges Paket installieren / Aufruf des Scripts
+
 ```bash
 # Hilfsprogramm für npm
 npm install -D tsx
