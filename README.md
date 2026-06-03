@@ -1,5 +1,35 @@
 # ProjektArbeit React
 
+## Schnellstart
+
+```bash
+# *.zip File entpacken
+
+# in den Projekt Ordner wechseln
+cd c:\...\ProjektOrdner
+
+# in den App Ordner wechseln
+cd notizbuch-app
+
+# die notwendigen Pakete installieren
+npm i
+
+# die benötigte .env.local erzeugen (das mitgelieferte Beispiel nutzen)
+copy .env.local.example .env.local
+
+# per default wird sqlite genutzt um ein DB File zu erstellen
+# Ansonsten die Einstellungen anpassen
+
+# Datenbank erzeugen
+npm run db:new
+
+# ODER Datenbank zurücksetzen (alle Inhalte werden auf den Ursprungszustand gesetzt)
+npm run db:reset
+
+# das Projekt kann gestartet werden
+npm run dev
+```
+
 #### [Anforderung: Projekt Beschreibung](project_beschreibung.md)
 
 ## Projekt inititalisieren und vorbereiten

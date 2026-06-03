@@ -1,3 +1,7 @@
+git archive --format=zip HEAD -o c:\temp\React_Project-Franziska_Walter.zip
+
+
+
 notizbuch-app/
 ├── src/
 │   ├── actions/
