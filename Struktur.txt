@@ -1,19 +1,9 @@
 git archive --format=zip HEAD -o c:\temp\React_Project-Franziska_Walter.zip
 
-
-
 notizbuch-app/
 ├── src/
 │   ├── actions/
 │   │   └── actions.ts
-│   ├── app/
-│   │   └── notizen/
-│   │       ├── [id]/
-│   │       │   └── bearbeiten/
-│   │       │       └── page.tsx
-│   │       ├── neu/
-│   │       │   └── page.tsx
-│   │       └── page.tsx
 │   ├── components/
 │   │   ├── CategoryFilter.tsx
 │   │   ├── HighlightedText.tsx

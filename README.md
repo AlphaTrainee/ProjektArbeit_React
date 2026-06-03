@@ -43,6 +43,13 @@ npm i zod
 npm i react-hook-form @hookform/resolvers
 ```
 
+### API Endpunkte erstellen und dokumentieren
+
+```bash
+npm install swagger-ui-react
+npm install --save-dev @types/swagger-ui-react
+```
+
 ## Datenbank Handling
 
 Um sich das Erstellen / Resetten der Datenbank zu vereinfachen, kann man folgende Einträge der
