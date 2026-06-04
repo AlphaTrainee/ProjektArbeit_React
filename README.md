@@ -46,8 +46,8 @@ npm i react-hook-form @hookform/resolvers
 ### API Endpunkte erstellen und dokumentieren
 
 ```bash
-npm install swagger-ui-react
-npm install --save-dev @types/swagger-ui-react
+npm install swagger-ui-react swagger-jsdoc
+npm install --save-dev @types/swagger-ui-react @types/swagger-jsdoc
 ```
 
 ## Datenbank Handling
