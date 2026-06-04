@@ -1,3 +1,4 @@
+import { CategoryFilter } from "@/components/CategoryFilter";
 import MySwaggerUI from "@/components/SwaggerUI";
 
 export const dynamic = "force-dynamic";
@@ -25,8 +26,9 @@ const spec = {
               schema: {
                 type: "object",
                 properties: {
-                  title: { type: "string" },
-                  content: { type: "string" },
+                  title: { type: "string", default: "Neuer Titel" },
+                  content: { type: "string", default: "Neuer Inhalt" },
+                  category: { type: "string", default: "Privat" },
                 },
               },
             },
@@ -55,7 +57,9 @@ const spec = {
               schema: {
                 type: "object",
                 properties: {
-                  title: { type: "string" },
+                  title: { type: "string", default: "Geänderter Titel" },
+                  content: { type: "string", default: "Geänderter Inhalt" },
+                  category: { type: "string", default: "Privat" },
                 },
               },
             },
