@@ -1,10 +1,39 @@
 {
+  // File Exclusions
   "files.watcherExclude": {
-    "**/.next/**": true,
-    "**/node_modules/**": true
+    "**/node_modules/**": true,
+    "**/.git/**": true,
+    "**/dist/**": true,
+    "**/.idea/**": true,
+    "**/.vite/**": true,
+    "**/.claude/**": true,
+    "**/.vscode/**": true,
+    "**/.generated/**": true,
+    "**/docker-data/**": true,
+    "**/database/exports/**": true,
+    "**/frontend/uploads/**": true,
+    "**/received-emails/**": true,
+    "**/emails-recus/**": true
   },
   "search.exclude": {
-    "**/.next/**": true,
-    "**/node_modules/**": true
+    "**/node_modules": true,
+    "**/.git": true,
+    "**/dist": true,
+    "**/.idea": true,
+    "**/.vite": true,
+    "**/.generated": true,
+    "**/docker-data": true,
+    "**/database/exports": true,
+    "**/frontend/uploads": true,
+    "**/received-emails": true,
+    "**/emails-recus": true
+  },
+  "files.exclude": {
+    "**/.generated": true,
+    "**/docker-data": true,
+    "**/database/exports": true,
+    "**/frontend/uploads": true,
+    "**/received-emails": true,
+    "**/emails-recus": true
   }
 }
