@@ -92,6 +92,52 @@ npm i rimraf
   }
 ```
 
+### Hinweise zum rimraf
+
+Verschiedene Hilfsprogramme "verhaken" sich mit rimraf.
+Das Arbeiten wird damit im vsCode zur Herausforderung, weil jede Aktion seeehr lange dauert.
+
+#### Abhilfe
+
+im Hauptverzeichnis des Projektes (falls noch nicht existiert)
+einen Ordner `.vscode` und darin eine Datei `settings.json` erstellen
+
+in diese Datei ein/hinzufügen
+
+```json
+{
+  "files.watcherExclude": {
+    "**/.next/**": true,
+    "**/node_modules/**": true
+  },
+  "search.exclude": {
+    "**/.next/**": true,
+    "**/node_modules/**": true
+  }
+}
+```
+
+### Projekt weitergeben
+
+Falls man einfach nur das Projekt, ohne über github.com gehen zu müssen,
+weitergeben möchte:
+
+- das Projekt wird lokal mit git verwaltet
+- es muss eine .gitignore vorhanden sein, die gepflegt ist
+
+#### Projekt zu einem Archiv hinzufügen
+
+Das Projekt wird anhand der Angaben in der `.gitignore` archiviert
+Dies spart viel Arbeit, weil man nicht alles per Hand auswählen muss.
+
+```bash
+# wird in den aktuellen Ordner Archiviert
+git archive --format=zip HEAD -o MeinProjekt.zip
+
+# In einen Ordner Archivieren
+git archive --format=zip HEAD -o c:\temp\MeinProjekt.zip
+```
+
 ## Projekt Thema: Digitales Notizbuch
 
 ### Projektstruktur & Dokumentation
