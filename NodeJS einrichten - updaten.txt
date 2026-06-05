@@ -1,6 +1,12 @@
 Install NodeJS
 ==============
 
+Telemetrie abschalten
+---------------------
+npx next telemetry disable
+npx next telemetry status
+
+
 winget install -e --id OpenJS.NodeJS
 
 # reopen terminal
