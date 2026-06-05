@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { noteSchema, Note } from "@/data/schema";
-import { formatZodErrors } from "@/types/fieldTypes";
+import { noteSchema, Note } from "@/schema/schema";
+import { formatZodErrors } from "@/schema/fieldTypes";
 
 export async function GET() {
   try {

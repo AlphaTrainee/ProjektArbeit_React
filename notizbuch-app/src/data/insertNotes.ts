@@ -1,9 +1,9 @@
 "use server";
 
 import { db as client } from "@/lib/db";
-import { noteSchema } from "@/data/schema";
+import { noteSchema } from "@/schema/schema";
 import { redirect } from "next/navigation";
-import { formatZodErrors, FieldErrors } from "@/types/fieldTypes";
+import { formatZodErrors, FieldErrors } from "@/schema/fieldTypes";
 
 type ActionState = {
   result: boolean;

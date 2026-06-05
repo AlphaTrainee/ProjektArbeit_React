@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Projektarbeit NextJS",
-  description: "NextJS/React Projektarbeit Franziska Walter",
+  title: "Projektarbeit React/NextJS",
+  description: "React/NextJS Projektarbeit Franziska Walter",
 };
 
 export default function RootLayout({

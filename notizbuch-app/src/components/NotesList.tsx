@@ -5,7 +5,7 @@ import { useFilterStore } from "@/store/filterStore";
 import { NoteCard } from "@/components/NoteCard";
 import { HighlightedText } from "@/components/HighlightedText";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Note } from "@/data/schema";
+import { Note } from "@/schema/schema";
 
 interface NotesListProps {
   initialNotes: Note[];

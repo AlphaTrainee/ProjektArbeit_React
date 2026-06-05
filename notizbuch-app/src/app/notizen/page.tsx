@@ -4,7 +4,7 @@ import { CategoryFilter } from "@/components/CategoryFilter";
 import { NotesList } from "@/components/NotesList";
 import Link from "next/link";
 import { SearchInput } from "@/components/SearchInput";
-import { Note } from "@/data/schema";
+import { Note } from "@/schema/schema";
 
 type PageProps = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;

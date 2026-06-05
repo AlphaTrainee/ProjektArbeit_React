@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 import { WeatherWidget } from "@/widgets/WeatherWidget";
 import { NoteCard } from "@/components/NoteCard";
 import Link from "next/link"; // Für die Navigation ohne Seiten-Reload
-import { noteSchema, Note } from "@/data/schema";
+import { noteSchema, Note } from "@/schema/schema";
 import { SearchInput } from "@/components/SearchInput";
 
 export default async function Home() {

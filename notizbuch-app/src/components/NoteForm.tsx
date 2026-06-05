@@ -4,7 +4,7 @@ import { insertNote } from "@/data/insertNotes";
 import { useActionState, useRef, startTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { noteSchema } from "@/data/schema";
+import { noteSchema } from "@/schema/schema";
 import { NOTE_CATEGORIES } from "@/constants/types";
 
 interface NoteFormProps {

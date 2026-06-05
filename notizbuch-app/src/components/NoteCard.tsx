@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import { deleteNoteAction } from "@/actions/actions";
 import Link from "next/link";
-import { Note } from "@/data/schema";
+import { Note } from "@/schema/schema";
 
 interface NoteCardProps {
   note: Note;

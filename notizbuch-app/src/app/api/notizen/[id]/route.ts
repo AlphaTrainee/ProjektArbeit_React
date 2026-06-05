@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { noteSchema } from "@/data/schema";
-import { formatZodErrors } from "@/types/fieldTypes";
+import { noteSchema } from "@/schema/schema";
+import { formatZodErrors } from "@/schema/fieldTypes";
 
 interface RouteParams {
   params: Promise<{
