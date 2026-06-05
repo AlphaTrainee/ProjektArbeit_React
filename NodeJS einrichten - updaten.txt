@@ -1,0 +1,46 @@
+Install NodeJS
+==============
+
+winget install -e --id OpenJS.NodeJS
+
+# reopen terminal
+node -v
+
+winget install CoreyButler.NVMforWindows
+
+-----------------------------------
+
+# Install NodeJS LTS
+nvm install lts
+
+# switch to lts
+nvm use lts
+
+# list available versions:
+nvm list
+
+
+# update npm to last version
+npm update -g npm
+
+-----------------------------------
+
+Alle Abhängigkeiten für das aktuelle Projekt installieren
+=========================================================
+
+npm -i
+
+
+NPM Settings
+------------
+show settings
+  npm config list
+  
+read config var
+  npm config get VarName
+  
+delete config var
+  npm config delete VarName
+  
+set config var
+  npm config set VarName Value
