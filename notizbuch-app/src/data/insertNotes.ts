@@ -3,15 +3,7 @@
 import { db as client } from "@/lib/db";
 import { noteSchema } from "@/data/schema";
 import { redirect } from "next/navigation";
-import { z } from "zod";
-
-type Err = { message: string };
-
-type FieldErrors = {
-  title: Err | null;
-  content: Err | null;
-  category: Err | null;
-};
+import { formatZodErrors, FieldErrors } from "@/types/fieldTypes";
 
 type ActionState = {
   result: boolean;
@@ -88,24 +80,4 @@ export async function insertNote(
     formData,
     errors: { title: null, content: null, category: null },
   };
-}
-
-function formatZodErrors(error: z.ZodError): FieldErrors {
-  const formattedErrors: FieldErrors = {
-    title: null,
-    content: null,
-    category: null,
-  };
-
-  for (const issue of error.issues) {
-    const field = issue.path[0];
-    if (field === "title" && !formattedErrors.title)
-      formattedErrors.title = { message: issue.message };
-    if (field === "content" && !formattedErrors.content)
-      formattedErrors.content = { message: issue.message };
-    if (field === "category" && !formattedErrors.category)
-      formattedErrors.category = { message: issue.message };
-  }
-
-  return formattedErrors;
 }

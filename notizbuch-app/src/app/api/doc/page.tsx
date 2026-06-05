@@ -1,4 +1,3 @@
-import { CategoryFilter } from "@/components/CategoryFilter";
 import MySwaggerUI from "@/components/SwaggerUI";
 
 export const dynamic = "force-dynamic";

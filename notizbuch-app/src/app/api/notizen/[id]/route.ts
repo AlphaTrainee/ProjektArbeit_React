@@ -1,40 +1,12 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { noteSchema, Note } from "@/data/schema";
-import { z } from "zod";
+import { noteSchema } from "@/data/schema";
+import { formatZodErrors } from "@/types/fieldTypes";
 
 interface RouteParams {
   params: Promise<{
     id: string;
   }>;
-}
-
-type Err = { message: string };
-
-type FieldErrors = {
-  title: Err | null;
-  content: Err | null;
-  category: Err | null;
-};
-
-function formatZodErrors(error: z.ZodError): FieldErrors {
-  const formattedErrors: FieldErrors = {
-    title: null,
-    content: null,
-    category: null,
-  };
-
-  for (const issue of error.issues) {
-    const field = issue.path[0];
-    if (field === "title" && !formattedErrors.title)
-      formattedErrors.title = { message: issue.message };
-    if (field === "content" && !formattedErrors.content)
-      formattedErrors.content = { message: issue.message };
-    if (field === "category" && !formattedErrors.category)
-      formattedErrors.category = { message: issue.message };
-  }
-
-  return formattedErrors;
 }
 
 // ==========================================
@@ -83,9 +55,9 @@ export async function PUT(request: Request, { params }: RouteParams) {
         category: category,
       },
     });
-  } catch (error) {
+  } catch (e) {
     return NextResponse.json(
-      { error: "Ungültiges JSON-Format" },
+      { error: `${e instanceof Error ? e.message : "Ungültiges JSON-Format"}` },
       { status: 400 },
     );
   }
@@ -117,9 +89,9 @@ export async function DELETE(request: Request, { params }: RouteParams) {
       result: true,
       id: id,
     });
-  } catch (error) {
+  } catch (e) {
     return NextResponse.json(
-      { error: "Interner Serverfehler" },
+      { error: `${e instanceof Error ? e.message : "Interner Serverfehler"}` },
       { status: 500 },
     );
   }

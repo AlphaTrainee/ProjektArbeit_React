@@ -1,15 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { noteSchema, Note } from "@/data/schema";
-import { z } from "zod";
-
-type Err = { message: string };
-
-type FieldErrors = {
-  title: Err | null;
-  content: Err | null;
-  category: Err | null;
-};
+import { formatZodErrors } from "@/types/fieldTypes";
 
 export async function GET() {
   try {
@@ -29,32 +21,14 @@ export async function GET() {
     return NextResponse.json({
       data: JSON.parse(JSON.stringify(latestNotes)) as Note[],
     });
-  } catch (error) {
+  } catch (e) {
     return NextResponse.json(
-      { error: "Fehler beim Laden der Notizen" },
+      {
+        error: `${e instanceof Error ? e.message : "Fehler beim Laden der Notizen"}`,
+      },
       { status: 500 },
     );
   }
-}
-
-function formatZodErrors(error: z.ZodError): FieldErrors {
-  const formattedErrors: FieldErrors = {
-    title: null,
-    content: null,
-    category: null,
-  };
-
-  for (const issue of error.issues) {
-    const field = issue.path[0];
-    if (field === "title" && !formattedErrors.title)
-      formattedErrors.title = { message: issue.message };
-    if (field === "content" && !formattedErrors.content)
-      formattedErrors.content = { message: issue.message };
-    if (field === "category" && !formattedErrors.category)
-      formattedErrors.category = { message: issue.message };
-  }
-
-  return formattedErrors;
 }
 
 export async function POST(request: Request) {
@@ -86,7 +60,9 @@ export async function POST(request: Request) {
       });
       insertedId = result.insertId?.toString();
     } catch (e) {
-      console.error("Datenbankfehler beim Speichern:", e);
+      console.error(
+        `Probleme beim Speichern: ${e instanceof Error ? e.message : "Unbekannter Datenbankfehler"}`,
+      );
       return NextResponse.json(
         {
           result: false,
@@ -108,9 +84,9 @@ export async function POST(request: Request) {
       },
       { status: 201 },
     );
-  } catch (error) {
+  } catch (e) {
     return NextResponse.json(
-      { error: "Ungültiges JSON-Format" },
+      { error: `${e instanceof Error ? e.message : "Ungültiges JSON-Format"}` },
       { status: 400 },
     );
   }
