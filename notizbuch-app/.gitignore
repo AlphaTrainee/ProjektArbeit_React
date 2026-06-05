@@ -61,3 +61,5 @@ next-env.d.ts
 # --- BETRIEBSSYSTEME ---
 .DS_Store
 Thumbs.db
+
+.liesmich.txt
