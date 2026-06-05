@@ -28,6 +28,10 @@ npm run db:reset
 
 # das Projekt kann gestartet werden
 npm run dev
+
+# oder als Release starten
+npm run build
+npm start
 ```
 
 #### [Anforderung: Projekt Beschreibung](project_beschreibung.md)
